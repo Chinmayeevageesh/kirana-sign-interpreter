@@ -1,0 +1,33 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kirana Sign Interpreter</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <h1>Kirana Sign Interpreter</h1>
+    <p>Indian Sign Language to Kannada Grocery Translator</p>
+
+    <h2>Live Camera</h2>
+    <video id="webcam" autoplay playsinline muted></video>
+    <button id="startCamera">Start Camera</button>
+
+    <h2>Recognized Grocery Item</h2>
+    <p id="englishResult">Waiting for recognition...</p>
+    <h1 id="kannadaResult">-</h1>
+
+    <button id="speakButton">Speak in Kannada</button>
+
+    <h2>Test with Dummy Labels</h2>
+    <button onclick="showResult('rice')">Rice</button>
+    <button onclick="showResult('milk')">Milk</button>
+    <button onclick="showResult('sugar')">Sugar</button>
+    <button onclick="showResult('unknown')">Unknown Sign</button>
+
+    <script src="script.js"></script>
+</body>
+</html>
