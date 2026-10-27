@@ -1,11 +1,14 @@
-
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
-app = FastAPI(title="Kirana Sign Interpreter API")
+app = FastAPI(
+    title="Kirana Sign Interpreter API",
+    description="Backend API for the Kirana Sign Interpreter project",
+    version="0.1.0"
+)
 
-# Allow our local website to communicate with the backend.
+# CORS configuration for local frontend development
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
@@ -19,18 +22,24 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Grocery names in Kannada
 GROCERY_KANNADA = {
     "rice": "ಅಕ್ಕಿ",
     "milk": "ಹಾಲು",
     "sugar": "ಸಕ್ಕರೆ",
 }
 
-class RecognitionRequest(BaseModel):
-    landmarks: list[list[float]] = Field(min_length=21, max_length=21)
 
-    # Temporary field for testing the website.
-    # Remove it when real recognition is integrated.
+class RecognitionRequest(BaseModel):
+    landmarks: list[list[float]] = Field(
+        min_length=21,
+        max_length=21
+    )
+
+    # Temporary testing field.
+    # Remove after integrating real recognition.
     test_label: str | None = None
+
 
 @app.get("/")
 def home():
@@ -38,14 +47,19 @@ def home():
         "message": "Kirana Sign Interpreter API is running"
     }
 
+
 @app.get("/api/health")
 def health():
-    return {"status": "ok"}
+    return {
+        "status": "ok"
+    }
+
 
 @app.post("/api/recognize")
 def recognize(request: RecognitionRequest):
+
     # TEMPORARY dummy prediction.
-    # Later, call the real landmark recognition module here.
+    # Actual recognition will be integrated later.
     label = request.test_label
 
     if label not in GROCERY_KANNADA:
@@ -61,6 +75,6 @@ def recognize(request: RecognitionRequest):
         "recognized": True,
         "label": label,
         "kannada": GROCERY_KANNADA[label],
-        "distance": 0.12,  # Dummy value, not a real measurement
+        "distance": 0.12,
         "message": "Sign recognized successfully"
     }
