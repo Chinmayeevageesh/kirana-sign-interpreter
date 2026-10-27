@@ -9,24 +9,57 @@
 </head>
 <body>
 
-    <h1>Kirana Sign Interpreter</h1>
-    <p>Indian Sign Language to Kannada Grocery Translator</p>
+    <header>
+        <h1>Kirana Sign Interpreter</h1>
+        <p>Indian Sign Language to Kannada Grocery Translator</p>
+    </header>
 
-    <h2>Live Camera</h2>
-    <video id="webcam" autoplay playsinline muted></video>
-    <button id="startCamera">Start Camera</button>
+    <main>
+        <div class="main-container">
 
-    <h2>Recognized Grocery Item</h2>
-    <p id="englishResult">Waiting for recognition...</p>
-    <h1 id="kannadaResult">-</h1>
+            <!-- Camera Section -->
+            <section class="card">
+                <h2>Live Camera</h2>
 
-    <button id="speakButton">Speak in Kannada</button>
+                <video id="webcam" autoplay playsinline muted></video>
 
-    <h2>Test with Dummy Labels</h2>
-    <button onclick="showResult('rice')">Rice</button>
-    <button onclick="showResult('milk')">Milk</button>
-    <button onclick="showResult('sugar')">Sugar</button>
-    <button onclick="showResult('unknown')">Unknown Sign</button>
+                <button id="startCamera">Start Camera</button>
+            </section>
+
+            <!-- Result Section -->
+            <section class="card">
+                <h2>Recognition Result</h2>
+
+                <p id="recognitionStatus">Waiting for sign...</p>
+
+                <h3>Recognized Grocery Item</h3>
+
+                <p id="englishResult">Waiting for recognition...</p>
+
+                <h1 id="kannadaResult">-</h1>
+
+                <button id="speakButton">Speak in Kannada</button>
+            </section>
+
+        </div>
+
+        <!-- Testing Section -->
+        <section class="card testing">
+            <h2>Test with Dummy Labels</h2>
+
+            
+
+<button onclick="simulateBackendResponse('rice')">Rice</button>
+<button onclick="simulateBackendResponse('milk')">Milk</button>
+<button onclick="simulateBackendResponse('sugar')">Sugar</button>
+<button onclick="simulateBackendResponse('unknown')">Unknown Sign</button>
+
+        </section>
+    </main>
+
+    <footer>
+        <p>Kirana Sign Interpreter | ISL to Kannada</p>
+    </footer>
 
     <script src="script.js"></script>
 </body>
