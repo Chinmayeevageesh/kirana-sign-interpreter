@@ -150,3 +150,39 @@ def test_invalid_landmark_value():
     )
 
     assert response.status_code == 422
+
+
+def test_landmark_with_wrong_coordinate_count():
+    landmarks = [
+        [0.1, 0.2, 0.0] for _ in range(21)
+    ]
+
+    landmarks[5] = [0.1, 0.2]
+
+    response = client.post(
+        "/api/recognize",
+        json={
+            "landmarks": landmarks,
+            "test_label": "rice"
+        }
+    )
+
+    assert response.status_code == 422
+
+
+def test_landmark_with_extra_coordinate():
+    landmarks = [
+        [0.1, 0.2, 0.0] for _ in range(21)
+    ]
+
+    landmarks[5] = [0.1, 0.2, 0.0, 0.4]
+
+    response = client.post(
+        "/api/recognize",
+        json={
+            "landmarks": landmarks,
+            "test_label": "rice"
+        }
+    )
+
+    assert response.status_code == 422

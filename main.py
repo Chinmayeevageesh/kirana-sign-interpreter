@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
+from math import isfinite
+from pydantic import field_validator
 
 app = FastAPI(
     title="Kirana Sign Interpreter API",
@@ -29,7 +31,6 @@ GROCERY_KANNADA = {
     "sugar": "ಸಕ್ಕರೆ",
 }
 
-
 class RecognitionRequest(BaseModel):
     landmarks: list[list[float]] = Field(
         min_length=21,
@@ -40,6 +41,21 @@ class RecognitionRequest(BaseModel):
     # Remove after integrating real recognition.
     test_label: str | None = None
 
+    @field_validator("landmarks")
+    @classmethod
+    def validate_landmarks(cls, landmarks):
+        for index, point in enumerate(landmarks):
+            if len(point) != 3:
+                raise ValueError(
+                    f"Landmark {index} must contain exactly 3 coordinates"
+                )
+
+            if not all(isfinite(value) for value in point):
+                raise ValueError(
+                    f"Landmark {index} contains a non-finite coordinate"
+                )
+
+        return landmarks
 
 @app.get("/")
 def home():
