@@ -122,3 +122,28 @@ footer {
         font-size: 38px;
     }
 }
+
+/* Shopkeeper Reply Section */
+
+.shopkeeper-section {
+    margin-top: 24px;
+}
+
+#spokenKannada {
+    font-size: 24px;
+    color: #245c45;
+}
+
+#translatedEnglish {
+    font-size: 28px;
+    color: #167a52;
+}
+
+#kannadaInput {
+    padding: 12px;
+    width: 80%;
+    max-width: 400px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+}

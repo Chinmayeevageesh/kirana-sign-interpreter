@@ -63,7 +63,6 @@ document.getElementById("speakButton").addEventListener("click", () => {
     }
 
     const speech = new SpeechSynthesisUtterance(text);
-
     speech.lang = "kn-IN";
     speech.rate = 0.85;
 
@@ -97,3 +96,119 @@ document.getElementById("startCamera").addEventListener("click", async () => {
         console.error(error);
     }
 });
+
+/* Shopkeeper Kannada Speech to English */
+
+
+const replyTranslations = {
+    // Grocery items
+    "ಅಕ್ಕಿ": "Rice",
+    "ಹಾಲು": "Milk",
+    "ಸಕ್ಕರೆ": "Sugar",
+    "ಅಂಗಡಿ": "Shop",
+    "ನೀರು": "Water",
+    "ಉಪ್ಪು": "Salt",
+    "ಎಣ್ಣೆ": "Oil",
+    "ಬೇಳೆ": "Dal",
+    "ತರಕಾರಿ": "Vegetables",
+
+    // Greetings
+    "ಹಲೋ": "Hello",
+    "ನಮಸ್ಕಾರ": "Hello",
+    "ಹೇಗಿದ್ದೀರಾ": "How are you?",
+    "ಚೆನ್ನಾಗಿದ್ದೇನೆ": "I am fine",
+    "ಸ್ವಾಗತ": "Welcome",
+    "ಧನ್ಯವಾದ": "Thank you",
+    "ದಯವಿಟ್ಟು": "Please",
+    "ಕ್ಷಮಿಸಿ": "Sorry",
+    "ಸರಿ": "Okay",
+
+    // Shopkeeper conversations
+    "ಎಷ್ಟು": "How much?",
+    "ಎಷ್ಟು ಬೇಕು": "How much do you need?",
+    "ಏನು ಬೇಕು": "What do you need?",
+    "ಅಕ್ಕಿ ಬೇಕಾ": "Do you want rice?",
+    "ಹಾಲು ಬೇಕಾ": "Do you want milk?",
+    "ಸಕ್ಕರೆ ಬೇಕಾ": "Do you want sugar?",
+    "ಇಪ್ಪತ್ತು ರೂಪಾಯಿ": "Twenty rupees",
+    "ಹತ್ತು ರೂಪಾಯಿ": "Ten rupees",
+    "ಐವತ್ತು ರೂಪಾಯಿ": "Fifty rupees",
+    "ನೂರು ರೂಪಾಯಿ": "One hundred rupees",
+    "ಇಲ್ಲ": "No",
+    "ಹೌದು": "Yes",
+    "ನಾಳೆ ಬನ್ನಿ": "Come tomorrow",
+    "ಸ್ಟಾಕ್ ಇಲ್ಲ": "Out of stock"
+};
+
+/* Translate Kannada Text */
+
+function translateKannada(text) {
+    const cleaned = text.trim().replace(/[.,!?।]/g, "");
+
+    document.getElementById("spokenKannada").textContent = text;
+
+    const translation = replyTranslations[cleaned];
+
+    document.getElementById("translatedEnglish").textContent =
+        translation || "Translation not available for this phrase.";
+}
+
+/* Translate Typed Kannada */
+
+document.getElementById("translateButton")
+    .addEventListener("click", () => {
+        const text = document.getElementById("kannadaInput").value;
+
+        if (!text.trim()) {
+            alert("Please enter Kannada text.");
+            return;
+        }
+
+        translateKannada(text);
+    });
+
+/* Kannada Speech Recognition */
+
+const SpeechRecognition =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
+
+const listenButton = document.getElementById("listenButton");
+const listeningStatus = document.getElementById("listeningStatus");
+
+if (SpeechRecognition) {
+    const recognition = new SpeechRecognition();
+
+    recognition.lang = "kn-IN";
+    recognition.continuous = false;
+    recognition.interimResults = false;
+
+    listenButton.addEventListener("click", () => {
+        listeningStatus.textContent = "Listening to Kannada...";
+        recognition.start();
+    });
+
+    recognition.onresult = (event) => {
+        const spokenText = event.results[0][0].transcript;
+
+        listeningStatus.textContent = "Speech captured!";
+        document.getElementById("kannadaInput").value = spokenText;
+
+        translateKannada(spokenText);
+    };
+
+    recognition.onerror = (event) => {
+        listeningStatus.textContent =
+            "Speech recognition error: " + event.error;
+    };
+
+    recognition.onend = () => {
+        if (listeningStatus.textContent === "Listening to Kannada...") {
+            listeningStatus.textContent = "Listening stopped.";
+        }
+    };
+} else {
+    listenButton.disabled = true;
+    listeningStatus.textContent =
+        "Speech recognition is not supported in this browser.";
+}
