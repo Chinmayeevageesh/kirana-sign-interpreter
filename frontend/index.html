@@ -20,20 +20,17 @@
             <!-- Camera Section -->
             <section class="card">
                 <h2>Live Camera</h2>
-
                 <video id="webcam" autoplay playsinline muted></video>
-
                 <button id="startCamera">Start Camera</button>
             </section>
 
-            <!-- Result Section -->
+            <!-- Recognition Result Section -->
             <section class="card">
                 <h2>Recognition Result</h2>
 
                 <p id="recognitionStatus">Waiting for sign...</p>
 
                 <h3>Recognized Grocery Item</h3>
-
                 <p id="englishResult">Waiting for recognition...</p>
 
                 <h1 id="kannadaResult">-</h1>
@@ -43,37 +40,54 @@
 
         </div>
 
-        <!-- Testing Section -->
+        <!-- Grocery Testing Section -->
         <section class="card testing">
             <h2>Test with Dummy Labels</h2>
 
-            
+            <button onclick="simulateBackendResponse('rice')">Rice</button>
+            <button onclick="simulateBackendResponse('milk')">Milk</button>
+            <button onclick="simulateBackendResponse('sugar')">Sugar</button>
+            <button onclick="simulateBackendResponse('salt')">Salt</button>
+            <button onclick="simulateBackendResponse('oil')">Oil</button>
+            <button onclick="simulateBackendResponse('dal')">Dal</button>
+            <button onclick="simulateBackendResponse('wheat')">Wheat</button>
+            <button onclick="simulateBackendResponse('tea')">Tea</button>
+            <button onclick="simulateBackendResponse('coffee')">Coffee</button>
+            <button onclick="simulateBackendResponse('biscuit')">Biscuit</button>
 
-<button onclick="simulateBackendResponse('rice')">Rice</button>
-<button onclick="simulateBackendResponse('milk')">Milk</button>
-<button onclick="simulateBackendResponse('sugar')">Sugar</button>
-<button onclick="simulateBackendResponse('unknown')">Unknown Sign</button>
-
+            <button onclick="simulateBackendResponse('unknown')">
+                Unknown Sign
+            </button>
         </section>
 
-<section class="card shopkeeper-section">
-    <h2>Shopkeeper Reply - Kannada to English</h2>
-    <p>Let the shopkeeper speak in Kannada.</p>
+        <!-- Shopkeeper Reply Section -->
+        <section class="card shopkeeper-section">
+            <h2>Shopkeeper Reply - Kannada to English</h2>
+            <p>Let the shopkeeper speak in Kannada.</p>
 
-    <button id="listenButton">🎤 Listen to Kannada</button>
-    <p id="listeningStatus">Press the button to start listening.</p>
+            <button id="listenButton">🎤 Listen to Kannada</button>
+            <p id="listeningStatus">
+                Press the button to start listening.
+            </p>
 
-    <h3>Kannada Speech</h3>
-    <p id="spokenKannada">Waiting for speech...</p>
+            <h3>Kannada Speech</h3>
+            <p id="spokenKannada">Waiting for speech...</p>
 
-    <h3>English Translation</h3>
-    <h2 id="translatedEnglish">-</h2>
+            <h3>English Translation</h3>
+            <h2 id="translatedEnglish">-</h2>
 
-    <p>Or type a Kannada reply to test:</p>
-    <input id="kannadaInput" type="text"
-           placeholder="ಕನ್ನಡದಲ್ಲಿ ಬರೆಯಿರಿ">
-    <button id="translateButton">Translate to English</button>
-</section>
+            <p>Or type a Kannada reply to test:</p>
+
+            <input
+                id="kannadaInput"
+                type="text"
+                placeholder="ಕನ್ನಡದಲ್ಲಿ ಬರೆಯಿರಿ"
+            >
+
+            <button id="translateButton">
+                Translate to English
+            </button>
+        </section>
 
     </main>
 
@@ -82,5 +96,6 @@
     </footer>
 
     <script src="script.js"></script>
+
 </body>
 </html>
