@@ -1,0 +1,149 @@
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background-color: #f4f7f5;
+    color: #26352d;
+    text-align: center;
+}
+
+header {
+    background-color: #245c45;
+    color: white;
+    padding: 35px 15px;
+}
+
+header h1 {
+    margin: 0 0 10px;
+    font-size: 36px;
+}
+
+header p {
+    margin: 0;
+}
+
+main {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+.main-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    align-items: stretch;
+}
+
+.card {
+    background-color: white;
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+
+.card h2 {
+    margin-top: 0;
+    color: #245c45;
+}
+
+video {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    background-color: #222;
+    border-radius: 12px;
+    margin: 20px auto;
+}
+
+button {
+    background-color: #245c45;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    margin: 6px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+button:hover {
+    background-color: #17432f;
+}
+
+#recognitionStatus {
+    background-color: #e8f4ff;
+    color: #175cd3;
+    padding: 14px;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+#englishResult {
+    font-size: 22px;
+    text-transform: capitalize;
+}
+
+#kannadaResult {
+    font-size: 48px;
+    color: #167a52;
+    margin: 20px 0;
+}
+
+.testing {
+    margin-top: 24px;
+}
+
+footer {
+    color: #666;
+    padding: 20px;
+}
+
+/* Mobile-friendly layout */
+@media (max-width: 768px) {
+    .main-container {
+        grid-template-columns: 1fr;
+    }
+
+    header h1 {
+        font-size: 28px;
+    }
+
+    .card {
+        padding: 18px;
+    }
+
+    #kannadaResult {
+        font-size: 38px;
+    }
+}
+
+/* Shopkeeper Reply Section */
+
+.shopkeeper-section {
+    margin-top: 24px;
+}
+
+#spokenKannada {
+    font-size: 24px;
+    color: #245c45;
+}
+
+#translatedEnglish {
+    font-size: 28px;
+    color: #167a52;
+}
+
+#kannadaInput {
+    padding: 12px;
+    width: 80%;
+    max-width: 400px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+}
