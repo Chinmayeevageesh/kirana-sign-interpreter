@@ -1,0 +1,16 @@
+Validation run 2026-10-30
+folder raw/rice: OK
+folder raw/milk: OK
+folder raw/sugar: OK
+folder raw/salt: OK
+folder raw/oil: OK
+folder raw/dal: OK
+folder raw/wheat: OK
+folder raw/tea: OK
+folder raw/coffee: OK
+folder raw/biscuit: OK
+videos found: 0
+metadata rows: 0
+landmark lines: 0
+duplicate sample IDs: 0 (no samples)
+RESULT: structure valid; dataset contains 0 videos and 0 landmark samples. Nothing was fabricated.

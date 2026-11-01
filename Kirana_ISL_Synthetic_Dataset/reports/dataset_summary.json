@@ -1,0 +1,21 @@
+{
+  "total_samples": 10,
+  "samples_per_label": {
+    "biscuit": 1,
+    "coffee": 1,
+    "dal": 1,
+    "milk": 1,
+    "oil": 1,
+    "rice": 1,
+    "salt": 1,
+    "sugar": 1,
+    "tea": 1,
+    "wheat": 1
+  },
+  "split_counts": {
+    "train": 7,
+    "validation": 1,
+    "test": 2
+  },
+  "note": "Small external YouTube dataset; splits are for pipeline testing only."
+}
