@@ -1,17 +1,12 @@
 from fastapi.testclient import TestClient
+
+from data_loader import load_dataset
 from main import app
-
-client = TestClient(app)
-
-# Dummy landmarks for testing only.
-# These are NOT real hand landmarks.
-DUMMY_LANDMARKS = [
-    [0.1, 0.2, 0.0] for _ in range(21)
-]
 
 
 def test_home_endpoint():
-    response = client.get("/")
+    with TestClient(app) as client:
+        response = client.get("/")
 
     assert response.status_code == 200
     assert response.json()["message"] == (
@@ -20,169 +15,172 @@ def test_home_endpoint():
 
 
 def test_health_endpoint():
-    response = client.get("/api/health")
+    with TestClient(app) as client:
+        response = client.get("/api/health")
 
     assert response.status_code == 200
-    assert response.json() == {"status": "ok"}
+    assert response.json()["status"] == "ok"
+    assert response.json()["recognizer_ready"] is True
 
 
 def test_recognize_rice():
-    response = client.post(
-        "/api/recognize",
-        json={
-            "landmarks": DUMMY_LANDMARKS,
-            "test_label": "rice"
-        }
-    )
+    samples = load_dataset()
+    rice_sample = next(s for s in samples if s["label"] == "rice")
+
+    with TestClient(app) as client:
+        response = client.post(
+            "/api/recognize",
+            json={"landmarks": rice_sample["frames"].tolist()},
+        )
 
     assert response.status_code == 200
-
     data = response.json()
-
     assert data["recognized"] is True
     assert data["label"] == "rice"
     assert data["kannada"] == "ಅಕ್ಕಿ"
-    assert data["distance"] == 0.12
+    assert data["status"] == "recognized"
 
 
 def test_recognize_milk():
-    response = client.post(
-        "/api/recognize",
-        json={
-            "landmarks": DUMMY_LANDMARKS,
-            "test_label": "milk"
-        }
-    )
+    samples = load_dataset()
+    sample = next(s for s in samples if s["label"] == "milk")
+
+    with TestClient(app) as client:
+        response = client.post(
+            "/api/recognize",
+            json={"landmarks": sample["frames"].tolist()},
+        )
 
     assert response.status_code == 200
-
     data = response.json()
-
     assert data["recognized"] is True
     assert data["label"] == "milk"
     assert data["kannada"] == "ಹಾಲು"
 
 
 def test_recognize_sugar():
-    response = client.post(
-        "/api/recognize",
-        json={
-            "landmarks": DUMMY_LANDMARKS,
-            "test_label": "sugar"
-        }
-    )
+    samples = load_dataset()
+    sample = next(s for s in samples if s["label"] == "sugar")
+
+    with TestClient(app) as client:
+        response = client.post(
+            "/api/recognize",
+            json={"landmarks": sample["frames"].tolist()},
+        )
 
     assert response.status_code == 200
-
     data = response.json()
-
     assert data["recognized"] is True
     assert data["label"] == "sugar"
     assert data["kannada"] == "ಸಕ್ಕರೆ"
 
 
 def test_unknown_sign():
-    response = client.post(
-        "/api/recognize",
-        json={
-            "landmarks": DUMMY_LANDMARKS,
-            "test_label": "unknown_item"
-        }
-    )
+    unknown_landmarks = [
+        [[100.0, 100.0, 100.0] for _ in range(21)]
+        for _ in range(5)
+    ]
+
+    with TestClient(app) as client:
+        response = client.post(
+            "/api/recognize",
+            json={"landmarks": unknown_landmarks},
+        )
 
     assert response.status_code == 200
-
     data = response.json()
-
     assert data["recognized"] is False
     assert data["label"] is None
     assert data["kannada"] is None
+    assert data["status"] == "unknown"
 
 
 def test_missing_landmarks():
-    response = client.post(
-        "/api/recognize",
-        json={
-            "test_label": "rice"
-        }
-    )
+    with TestClient(app) as client:
+        response = client.post("/api/recognize", json={})
+
+    assert response.status_code == 422
+
+
+def test_empty_landmarks():
+    with TestClient(app) as client:
+        response = client.post(
+            "/api/recognize",
+            json={"landmarks": []},
+        )
 
     assert response.status_code == 422
 
 
 def test_less_than_21_landmarks():
-    response = client.post(
-        "/api/recognize",
-        json={
-            "landmarks": DUMMY_LANDMARKS[:20],
-            "test_label": "rice"
-        }
-    )
+    frame = [[0.1, 0.2, 0.0] for _ in range(20)]
+
+    with TestClient(app) as client:
+        response = client.post(
+            "/api/recognize",
+            json={"landmarks": [frame]},
+        )
 
     assert response.status_code == 422
 
 
 def test_more_than_21_landmarks():
-    response = client.post(
-        "/api/recognize",
-        json={
-            "landmarks": DUMMY_LANDMARKS + [[0.1, 0.2, 0.0]],
-            "test_label": "rice"
-        }
-    )
+    frame = [[0.1, 0.2, 0.0] for _ in range(22)]
+
+    with TestClient(app) as client:
+        response = client.post(
+            "/api/recognize",
+            json={"landmarks": [frame]},
+        )
 
     assert response.status_code == 422
 
 
 def test_invalid_landmark_value():
-    invalid_landmarks = [
-        [0.1, 0.2, 0.0] for _ in range(21)
-    ]
+    frame = [[0.1, 0.2, 0.0] for _ in range(21)]
+    frame[0] = ["invalid", 0.2, 0.0]
 
-    invalid_landmarks[0] = ["invalid", 0.2, 0.0]
-
-    response = client.post(
-        "/api/recognize",
-        json={
-            "landmarks": invalid_landmarks,
-            "test_label": "rice"
-        }
-    )
+    with TestClient(app) as client:
+        response = client.post(
+            "/api/recognize",
+            json={"landmarks": [frame]},
+        )
 
     assert response.status_code == 422
 
 
 def test_landmark_with_wrong_coordinate_count():
-    landmarks = [
-        [0.1, 0.2, 0.0] for _ in range(21)
-    ]
+    frame = [[0.1, 0.2, 0.0] for _ in range(21)]
+    frame[5] = [0.1, 0.2]
 
-    landmarks[5] = [0.1, 0.2]
-
-    response = client.post(
-        "/api/recognize",
-        json={
-            "landmarks": landmarks,
-            "test_label": "rice"
-        }
-    )
+    with TestClient(app) as client:
+        response = client.post(
+            "/api/recognize",
+            json={"landmarks": [frame]},
+        )
 
     assert response.status_code == 422
 
 
 def test_landmark_with_extra_coordinate():
-    landmarks = [
-        [0.1, 0.2, 0.0] for _ in range(21)
-    ]
+    frame = [[0.1, 0.2, 0.0] for _ in range(21)]
+    frame[5] = [0.1, 0.2, 0.0, 0.4]
 
-    landmarks[5] = [0.1, 0.2, 0.0, 0.4]
-
-    response = client.post(
-        "/api/recognize",
-        json={
-            "landmarks": landmarks,
-            "test_label": "rice"
-        }
-    )
+    with TestClient(app) as client:
+        response = client.post(
+            "/api/recognize",
+            json={"landmarks": [frame]},
+        )
 
     assert response.status_code == 422
+
+def test_non_finite_landmark_value():
+    import pytest
+    from pydantic import ValidationError
+    from main import RecognitionRequest
+
+    frame = [[0.1, 0.2, 0.0] for _ in range(21)]
+    frame[0] = [float("nan"), 0.2, 0.0]
+
+    with pytest.raises(ValidationError):
+        RecognitionRequest(landmarks=[frame])

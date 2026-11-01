@@ -1,7 +1,7 @@
-import unittest
+﻿import unittest
 import numpy as np
 
-from data.load_dataset import load_dataset
+from data_loader import load_dataset
 from recognition.recognizer import SignRecognizer
 
 
@@ -47,3 +47,4 @@ class TestSignRecognizer(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
+

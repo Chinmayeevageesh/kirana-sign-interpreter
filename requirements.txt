@@ -20,3 +20,4 @@ websockets==17.2
 pytest
 httpx
 requests
+numpy==2.5.4
