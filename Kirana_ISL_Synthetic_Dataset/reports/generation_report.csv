@@ -1,0 +1,12 @@
+label,target_videos,videos_generated,videos_failed,status,notes
+rice,20,0,0,not_generated,No video generation capability available in this environment; no videos created
+milk,20,0,0,not_generated,No video generation capability available in this environment; no videos created
+sugar,20,0,0,not_generated,No video generation capability available in this environment; no videos created
+salt,20,0,0,not_generated,No video generation capability available in this environment; no videos created
+oil,20,0,0,not_generated,No video generation capability available in this environment; no videos created
+dal,20,0,0,not_generated,No video generation capability available in this environment; no videos created
+wheat,20,0,0,not_generated,No video generation capability available in this environment; no videos created
+tea,20,0,0,not_generated,No video generation capability available in this environment; no videos created
+coffee,20,0,0,not_generated,No video generation capability available in this environment; no videos created
+biscuit,20,0,0,not_generated,No video generation capability available in this environment; no videos created
+TOTAL,200,0,0,not_generated,
